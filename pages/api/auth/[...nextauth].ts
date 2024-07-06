@@ -1,14 +1,19 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
-import SupabaseAdapter from "@next-auth/supabase-adapter"
+import NextAuth from "next-auth"
+import { SupabaseAdapter } from "@auth/supabase-adapter"
 
-export const authOptions: NextAuthOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    // Add providers here (e.g., Google, GitHub)
+    // Add your providers here, for example:
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID!,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    // }),
   ],
   adapter: SupabaseAdapter({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
   }),
-}
+  // Add any additional NextAuth configuration here
+})
 
-export default NextAuth(authOptions)
+export { handlers as GET, handlers as POST }
